@@ -1,0 +1,25 @@
+.trending-topics {
+    margin-top: 10px;
+
+    div {
+        cursor: pointer;
+        padding: .5em 0 .5em 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    h3 {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    div:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+}
