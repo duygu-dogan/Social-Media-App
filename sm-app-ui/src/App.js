@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.scss'
-import { LeftPane, RightPane } from './components'
+import { LeftPane, RightPane, Home } from './components'
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <div className='app'>
         <LeftPane />
         <Routes>
-          <Route path='/' element={<div>Home</div>} />
+          <Route path='/' element={<Home />} />
           <Route path='explore' element={<div>Explore</div>} />
           <Route path='notifications' element={<div>Notifications</div>} />
           <Route path='messages' element={<div>Messages</div>} />
