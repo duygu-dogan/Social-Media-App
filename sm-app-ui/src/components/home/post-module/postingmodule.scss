@@ -1,0 +1,27 @@
+.posting-main {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background: #15202b;
+    color: #fff;
+    border-bottom: rgb(81, 89, 101) .1px solid;
+}
+
+.post-main-text {
+    border-bottom: rgb(81, 89, 101) .1px solid;
+}
+
+.post-main-text textarea {
+    width: 100%;
+    min-height: 40px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    resize: none;
+}
+
+.align-placeholder {
+    padding: 10px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
