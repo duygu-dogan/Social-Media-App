@@ -9,6 +9,13 @@ const Home = () => {
         <div className='main-timeline'>
             <PostingModule />
             <TimelineModule />
+            <TimelineModule />
+            <TimelineModule />
+            <TimelineModule />
+            <TimelineModule />
+            <TimelineModule />
+            <TimelineModule />
+
         </div >
     )
 }

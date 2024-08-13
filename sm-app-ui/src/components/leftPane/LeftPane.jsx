@@ -9,8 +9,8 @@ import { bookmarksIcon, exploreIcon, homeIcon, listsIcon, messagesIcon, moreIcon
 function LeftPane() {
     return (
         <>
-            <div className='left-pane sticky top-0'>
-                <div className='container ml-32 min-h-screen flex flex-col justify-between'>
+            <div className='left-pane pl-40 sticky top-0'>
+                <div className='container min-h-screen flex flex-col justify-between'>
                     <div>
                         <header className='mt-3'>
                             <FontAwesomeIcon className='text-4xl mb-3 p-2 twitter-icon ' icon={faTwitter} />

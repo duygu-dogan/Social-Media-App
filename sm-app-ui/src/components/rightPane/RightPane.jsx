@@ -1,4 +1,3 @@
-import React from 'react'
 import './rightPane.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass'
@@ -7,9 +6,9 @@ import Recommeds from './recommends/Recommeds'
 
 const RightPane = () => {
     return (
-        <div className='right-pane pe-20'>
+        <div className="right-pane flex flex-col pe-36">
             <div className='sticky top-0 search-bar-bg py-3'>
-                <form className='flex  mx-8 bg-gray-700 h-10 rounded-full search-bar'>
+                <form className='flex mx-8 bg-gray-700 h-10 rounded-full search-bar'>
                     <div className='flex items-center'>
                         <FontAwesomeIcon className='text-white text-lg pl-2 search-icon' icon={faMagnifyingGlass} />
                     </div>
