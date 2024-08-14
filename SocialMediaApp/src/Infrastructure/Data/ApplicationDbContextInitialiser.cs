@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SocialMediaApp.Domain.Constants;
 using SocialMediaApp.Domain.Entities;
 using SocialMediaApp.Infrastructure.Identity;
 
