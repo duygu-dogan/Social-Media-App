@@ -10,9 +10,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    public DbSet<TodoList> TodoLists => Set<TodoList>();
-
-    public DbSet<TodoItem> TodoItems => Set<TodoItem>();
+    public DbSet<Conversation> Conversations => Set<Conversation>();
+    public DbSet<Message> Messages =>Set<Message>();
+    public DbSet<Follow> Follows => Set<Follow>();
+    public DbSet<Like> Likes => Set<Like>();
+    public DbSet<Post> Posts => Set<Post>();
+    public DbSet<Media> Medias => Set<Media>();
+    public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<RePost> RePosts => Set<RePost>();
+    public DbSet<User> DomainUsers => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
