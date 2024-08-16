@@ -8,7 +8,11 @@ using SocialMediaApp.Infrastructure.Identity;
 namespace SocialMediaApp.Infrastructure.Data;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    private readonly IUserNotificationService _userNotificationService;
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserNotificationService userNotificationService) : base(options) 
+    {
+        _userNotificationService = userNotificationService;
+    }
 
     public DbSet<Conversation> Conversations => Set<Conversation>();
     public DbSet<Message> Messages =>Set<Message>();
@@ -24,5 +28,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+    private async Task SendNotifications(IEnumerable<Notification> notifications, CancellationToken cancellationToken)
+    {
+        foreach (var notification in notifications)
+        {
+            var notificationWithRelateds = await Notifications.Include(n => n.Post)
+                 .Include(n => n.CreatedBy)
+                 .Include(n => n.ForUser)
+                 .FirstOrDefaultAsync(n => n.Id == notification.Id, cancellationToken);
+
+            if (notificationWithRelateds != null)
+                _userNotificationService.SendNotification(notificationWithRelateds);
+        }
     }
 }

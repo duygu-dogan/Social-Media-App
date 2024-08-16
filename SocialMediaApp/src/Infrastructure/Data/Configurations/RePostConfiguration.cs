@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SocialMediaApp.Domain.Entities;
 
 namespace SocialMediaApp.Infrastructure.Data.Configurations;
-public class MediaConfiguration: IEntityTypeConfiguration<Media>
+public class RePostConfiguration: IEntityTypeConfiguration<RePost>
 {
-    public void Configure(EntityTypeBuilder<Media> builder)
+    public void Configure(EntityTypeBuilder<RePost> builder)
     {
-        builder.Property(m => m.Content).HasMaxLength(1024);
+        builder.HasKey(r => new { r.CreatedById, r.PostId });
     }
 }
+

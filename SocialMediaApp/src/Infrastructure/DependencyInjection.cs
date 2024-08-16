@@ -19,6 +19,7 @@ public static class DependencyInjection
 
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+        services.AddScoped<IUserNotificationService>();
 
         services.AddDbContext<ApplicationDbContext>((sp, options) =>
         {
@@ -40,7 +41,7 @@ public static class DependencyInjection
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddAuthorization(options =>
-            options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+            options.AddPolicy("CanPurge", policy => policy.RequireRole(Roles.Administrator)));
 
         return services;
     }
