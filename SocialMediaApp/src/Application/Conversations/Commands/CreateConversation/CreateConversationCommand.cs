@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SocialMediaApp.Domain.Entities;
 
-namespace SocialMediaApp.Application.Conversations.Commands;
-public record CreateConversationCommand: IRequest<string>
+namespace SocialMediaApp.Application.Conversations.Commands.CreateConversation;
+public record CreateConversationCommand : IRequest<string>
 {
     public IEnumerable<string>? Members { get; init; }
 }
