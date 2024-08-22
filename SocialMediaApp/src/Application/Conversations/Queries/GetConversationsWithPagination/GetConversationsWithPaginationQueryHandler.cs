@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SocialMediaApp.Application.Common.Interfaces;
+﻿using SocialMediaApp.Application.Common.Interfaces;
 using SocialMediaApp.Application.Common.Mappings;
 using SocialMediaApp.Application.Common.Models;
-using SocialMediaApp.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 namespace SocialMediaApp.Application.Conversations.Queries.GetConversationsWithPagination;
 public class GetConversationsWithPaginationQueryHandler : IRequestHandler<GetConversationsWithPaginationQuery, PaginatedList<ConversationBriefDto>>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
 
-    public GetConversationsWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetConversationsWithPaginationQueryHandler(IApplicationDbContext context)
     {
         _context = context;
-        _mapper = mapper;
     }
 
     public async Task<PaginatedList<ConversationBriefDto>> Handle(GetConversationsWithPaginationQuery request, CancellationToken cancellationToken)
