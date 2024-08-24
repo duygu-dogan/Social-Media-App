@@ -1,4 +1,6 @@
-﻿using SocialMediaApp.Application.Common.Exceptions;
+﻿using System.Security.Cryptography;
+using SocialMediaApp.Application.Common.Exceptions;
+using SocialMediaApp.Application.Common.Helpers;
 using SocialMediaApp.Application.Common.Interfaces;
 
 namespace SocialMediaApp.Application.Follows.Queries.GetFollowSuggestions;
@@ -29,7 +31,8 @@ public class GetFollowSuggestionsQueryHandler : IRequestHandler<GetFollowSuggest
             .Where(u => u.Id != user.Id && !u.Followers.Any(f => f.FollowerId == user.Id));
         var notFollowedCount = await notFollowed.CountAsync(cancellationToken);
 
-        var randomSkip = notFollowedCount > requestedCount ? new Random().Next(notFollowedCount - requestedCount) : 0;
+        var sng = new SecureRandomGenerator();
+        var randomSkip = notFollowedCount > requestedCount ? sng.Next(requestedCount, notFollowedCount) : 0;
 
         return await notFollowed.Skip(randomSkip)
             .Take(requestedCount)
