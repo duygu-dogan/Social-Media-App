@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Likes\Commands\" />
+    <Folder Include="Likes\Commands\DeleteLike\" />
     <Folder Include="Likes\Events\" />
   </ItemGroup>
 
