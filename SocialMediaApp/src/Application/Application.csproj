@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Medias\Commands\" />
+    <Folder Include="Medias\Queries\" />
+  </ItemGroup>
+
 </Project>
