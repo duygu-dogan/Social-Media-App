@@ -11,7 +11,7 @@ public class Post: AuthorAuditableEntity
     public string? Content { get; set; }
     public string? Draft { get; set; }
     public Guid MediaId { get; set; }
-    public Media? Media { get; set; }
+    public IEnumerable<Media>? Media { get; set; }
     public Post? AnswerTo { get; set; }
     public Guid? AnswerToId { get; set; }
     public IEnumerable<Post>? Answers { get; set; }
