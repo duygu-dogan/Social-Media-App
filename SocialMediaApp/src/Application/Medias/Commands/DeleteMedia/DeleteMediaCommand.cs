@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialMediaApp.Application.Medias.Commands.DeleteMedia;
-internal class DeleteMediaCommand
+internal record DeleteMediaCommand: IRequest
 {
+    public string? Path { get; set; }
+    public string? FileName { get; set; }
 }
