@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace SocialMediaApp.Application.Medias.Commands.UploadMedia;
-internal class UploadMediaCommand:IRequest
+internal record UploadMediaCommand:IRequest
 {
     public string? PostId { get; set; }
     public string? UserId { get; set; }
