@@ -32,13 +32,13 @@ public class CreateLikeCommandHandler : IRequestHandler<CreateLikeCommand, Unit>
         if (liker == null)
             throw new ForbiddenAccessException();
 
-        var alreadyLiked = await _context.Likes.AnyAsync(l => l.PostId == post.Id && l.CreatedById == liker.Id, cancellationToken);
+        var alreadyLiked = await _context.Likes.AnyAsync(l => l.PostId == post.Id && l.CreatedById == liker.Id.ToString(), cancellationToken);
         if (!alreadyLiked)
         {
             var entity = new Like
             {
                 PostId = post.Id,
-                CreatedById = liker.Id
+                CreatedById = liker.Id.ToString()
             };
 
             entity.AddDomainEvent(new LikeCreatedEvent(entity));

@@ -8,5 +8,6 @@ namespace SocialMediaApp.Domain.Common;
 public class AuthorAuditableEntity:BaseAuditableEntity
 {
     public User? CreatedBy { get; set; }
-    public Guid CreatedById { get; set; }
+    public string? CreatedById { get; set; }
+    public string? LastModifiedById { get; set; }
 }

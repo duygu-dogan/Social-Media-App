@@ -58,11 +58,11 @@ public class Post: AuthorAuditableEntity
 
     public static Expression<Func<Post, bool>> IsLikedBy(Guid userId)
     {
-        return p => (p.Likes ?? Enumerable.Empty<Like>()).Any(l => l.CreatedById == userId);
+        return p => (p.Likes ?? Enumerable.Empty<Like>()).Any(l => l.CreatedById == userId.ToString());
     }
 
     public static Expression<Func<Post, bool>> IsRePostedBy(Guid userId)
     {
-        return p => (p.RePosts ?? Enumerable.Empty<RePost>()).Any(r => r.CreatedById == userId);
+        return p => (p.RePosts ?? Enumerable.Empty<RePost>()).Any(r => r.CreatedById == userId.ToString());
     }
 }

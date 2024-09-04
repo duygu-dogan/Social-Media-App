@@ -25,14 +25,14 @@ internal class LikeCreatedEventHandler : INotificationHandler<LikeCreatedEvent>
         var like = notification.Like;
         
         var alreadyNotified = await _context.Notifications.AnyAsync(
-            n => n.ForUserId == like!.Post!.CreatedById && n.CreatedById == like.CreatedById && n.Type == Domain.Entities.NotificationType.Like, cancellationToken);
+            n => n.ForUserId.ToString() == like!.Post!.CreatedById && n.CreatedById == like.CreatedById && n.Type == Domain.Entities.NotificationType.Like, cancellationToken);
 
         if (alreadyNotified)
             return;
 
         var notif = new Notification
         {   
-            ForUserId = like!.Post!.CreatedById,
+            ForUserId = like!.Post!.CreatedBy!.Id,
             Type = NotificationType.Like
         };
         await _context.Notifications.AddAsync(notif, cancellationToken);
