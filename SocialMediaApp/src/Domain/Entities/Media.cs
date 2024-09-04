@@ -11,7 +11,5 @@ public class Media: AuthorAuditableEntity
     public Post? Post { get; set; }
     public Guid PostId { get; set; }
     public string? Path { get; set; }
-    public byte[]? Content { get; set; }
-    public string? ContentType { get; set; }
     public string? FileName { get; set; }
 }
