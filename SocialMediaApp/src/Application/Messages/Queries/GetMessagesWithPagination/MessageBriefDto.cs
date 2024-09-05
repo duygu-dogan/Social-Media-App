@@ -23,7 +23,7 @@ public class MessageBriefDto
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Content, opt => opt.MapFrom(s => s.Content))
                 .ForMember(d => d.MediaId, opt => opt.MapFrom(s => s.MediaId))
-                .ForMember(d => d.SenderId, opt => opt.MapFrom(s => s.CreatedById))
+                .ForMember(d => d.SenderId, opt => opt.MapFrom(s => s.CreatedBy!.Id))
                 .ForMember(d => d.Created, opt => opt.MapFrom(s => s.Created));
         }
     }

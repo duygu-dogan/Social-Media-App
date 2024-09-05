@@ -8,8 +8,8 @@ using SocialMediaApp.Infrastructure.Identity;
 namespace SocialMediaApp.Infrastructure.Data;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
 {
-    private readonly IUserNotificationService _userNotificationService;
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserNotificationService userNotificationService) : base(options) 
+    private readonly IUserNotificationService? _userNotificationService;
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IUserNotificationService? userNotificationService = null) : base(options) 
     {
         _userNotificationService = userNotificationService;
     }
@@ -39,7 +39,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
                  .FirstOrDefaultAsync(n => n.Id == notification.Id, cancellationToken);
 
             if (notificationWithRelateds != null)
-                _userNotificationService.SendNotification(notificationWithRelateds);
+                _userNotificationService?.SendNotification(notificationWithRelateds);
         }
     }
 }

@@ -12,6 +12,7 @@ public class LikeConfiguration: IEntityTypeConfiguration<Like>
 {
     public void Configure(EntityTypeBuilder<Like> builder)
     {
-        builder.HasKey(l => new { l.CreatedById, l.PostId });
+        builder.HasKey(l => new { l.UserId, l.PostId });
+
     }
 }

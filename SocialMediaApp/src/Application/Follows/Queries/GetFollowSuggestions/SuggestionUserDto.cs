@@ -17,6 +17,6 @@ public class Mapping : Profile
             .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
             .ForMember(d => d.FullName, opt => opt.MapFrom(s => s.FullName))
             .ForMember(d => d.UserName, opt => opt.MapFrom(s => s.UserName))
-            .ForMember(d => d.ProfilePicture, opt => opt.MapFrom(s => s.PictureId));
+            /*.ForMember(d => d.ProfilePicture, opt => opt.MapFrom(s => s.PictureId))*/;
     }
 }

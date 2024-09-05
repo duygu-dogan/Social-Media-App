@@ -20,7 +20,7 @@ public class FollowCreatedEventHandler : INotificationHandler<FollowCreatedEvent
         var follow = notification.Follow;
 
         var alreadyNotified = await _context.Notifications.AnyAsync(
-            n => n.ForUserId == follow!.FollowedId && n.CreatedById == follow.FollowerId.ToString() && n.Type == Domain.Entities.NotificationType.Follow, cancellationToken);
+            n => n.ForUserId == follow!.FollowedId && n.CreatedBy!.Id == follow.FollowerId && n.Type == Domain.Entities.NotificationType.Follow, cancellationToken);
         if (alreadyNotified)
             return;
 

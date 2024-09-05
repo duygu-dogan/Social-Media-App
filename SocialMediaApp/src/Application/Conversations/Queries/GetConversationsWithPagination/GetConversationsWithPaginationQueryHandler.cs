@@ -20,7 +20,7 @@ public class GetConversationsWithPaginationQueryHandler : IRequestHandler<GetCon
                 {
                     Id = c.Id.ToString(),
                     Content = c.Messages!.OrderByDescending(m => m.Created).Select(m => m.Content).FirstOrDefault(),
-                    SenderId = c.Messages!.Select(m => m.CreatedById).FirstOrDefault(),
+                    SenderId = c.Messages!.Select(m => m.CreatedBy!.Id).FirstOrDefault().ToString(),
                     ReciepentId = c.Members!.FirstOrDefault(u => u.Id.ToString() == request.UserId)!.Id.ToString(),
                     Created = c.Messages!.OrderByDescending(m => m.Created).Select(m => m.Created).FirstOrDefault()
                 })

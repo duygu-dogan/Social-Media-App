@@ -11,10 +11,10 @@ public class User: BaseAuditableEntity
     public string? FullName { get; set; }
     public string? UserName { get; set; }
     public string? Email { get; set; }
-    public Media? Picture { get; set; }
-    public  Guid PictureId { get; set; }
-    public Media? Banner { get; set; }
-    public Guid BannerId { get; set; }
+    //public Media? Picture { get; set; }
+    //public  Guid PictureId { get; set; }
+    //public Media? Banner { get; set; }
+    //public Guid BannerId { get; set; }
     public string? Location { get; set; }
     public string? Bio { get; set; }
     public string? WebSite { get; set; }

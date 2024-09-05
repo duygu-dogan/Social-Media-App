@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace SocialMediaApp.Domain.Entities;
 public class Post: AuthorAuditableEntity
 {
+    public Guid UserId { get; set; }
     public string? Content { get; set; }
     public string? Draft { get; set; }
     public Guid MediaId { get; set; }
@@ -22,7 +23,7 @@ public class Post: AuthorAuditableEntity
     {
         return p => (p.Likes ?? Enumerable.Empty<Like>())
                     .Any(l => l.CreatedBy != null &&
-                              (l.CreatedBy.Followers ?? Enumerable.Empty<Follow>())
+                              (l.CreatedBy!.Followers ?? Enumerable.Empty<Follow>())
                     .Any(f => f.FollowerId == userId));
     }
 
@@ -58,11 +59,11 @@ public class Post: AuthorAuditableEntity
 
     public static Expression<Func<Post, bool>> IsLikedBy(Guid userId)
     {
-        return p => (p.Likes ?? Enumerable.Empty<Like>()).Any(l => l.CreatedById == userId.ToString());
+        return p => (p.Likes ?? Enumerable.Empty<Like>()).Any(l => l.CreatedBy!.Id == userId);
     }
 
     public static Expression<Func<Post, bool>> IsRePostedBy(Guid userId)
     {
-        return p => (p.RePosts ?? Enumerable.Empty<RePost>()).Any(r => r.CreatedById == userId.ToString());
+        return p => (p.RePosts ?? Enumerable.Empty<RePost>()).Any(r => r.CreatedBy!.Id == userId);
     }
 }

@@ -12,7 +12,7 @@ public class RePostConfiguration: IEntityTypeConfiguration<RePost>
 {
     public void Configure(EntityTypeBuilder<RePost> builder)
     {
-        builder.HasKey(r => new { r.CreatedById, r.PostId });
+        builder.HasKey(r => new { r.UserId, r.PostId });
     }
 }
 

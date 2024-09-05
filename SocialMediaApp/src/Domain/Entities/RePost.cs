@@ -9,4 +9,5 @@ public class RePost: AuthorAuditableEntity
 {
     public Post? Post { get; set; }
     public Guid PostId { get; set; }
+    public Guid UserId { get; set; }
 }
