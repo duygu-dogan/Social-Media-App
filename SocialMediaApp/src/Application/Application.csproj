@@ -17,4 +17,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Messages\Commands\DeleteMessage\" />
+    <Folder Include="Messages\EventHandlers\" />
+  </ItemGroup>
+
 </Project>
