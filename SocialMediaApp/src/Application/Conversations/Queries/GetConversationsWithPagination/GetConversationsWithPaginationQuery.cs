@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SocialMediaApp.Application.Common.Models;
 
 namespace SocialMediaApp.Application.Conversations.Queries.GetConversationsWithPagination;
-public record GetConversationsWithPaginationQuery: IRequest<PaginatedList<ConversationBriefDto>>
+public record GetConversationsWithPaginationQuery: IRequest<PaginatedList<ConversationVM>>
 {
     public string? UserId { get; set; }
     public int PageNumber { get; init; } = 1;

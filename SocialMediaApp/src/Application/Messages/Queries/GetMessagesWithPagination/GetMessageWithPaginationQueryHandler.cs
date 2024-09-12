@@ -11,25 +11,19 @@ namespace SocialMediaApp.Application.Messages.Queries.GetMessagesWithPagination;
 internal class GetMessageWithPaginationQueryHandler : IRequestHandler<GetMessageWithPaginationQuery, PaginatedList<MessageDto>>
 {
     private readonly IApplicationDbContext _context;
+    private readonly IMapper _mapper;
 
-    public GetMessageWithPaginationQueryHandler(IApplicationDbContext context)
+    public GetMessageWithPaginationQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<PaginatedList<MessageDto>> Handle(GetMessageWithPaginationQuery request, CancellationToken cancellationToken)
     {
         return await _context.Messages
             .Where(m => m.Id.ToString() == request.MessageId)
-            .Select(message => new MessageDto
-        {
-            Content = message.Content,
-            Created = message.Created,
-            Id = message.Id.ToString(),
-            MediaId = message.MediaId.ToString(),
-            SenderId = message.CreatedBy!.Id.ToString(),
-            ToUserId = message.ToUserId.ToString()
-        })
+            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
             .OrderByDescending(m => m.Created)
             .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
