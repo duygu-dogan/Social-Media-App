@@ -11,5 +11,6 @@ public enum NotificationType
     Mention,
     Answer,
     RePost,
-    Like
+    Like,
+    Message
 }
