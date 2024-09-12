@@ -19,7 +19,9 @@ internal class GetMediasWithPaginationQueryHandler : IRequestHandler<GetMediasWi
 
     public async Task<PaginatedList<MediaDto>> Handle(GetMediasWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        return await _context.Medias.Select(media => new MediaDto
+        return await _context.Medias
+            .Where(m=> m.Id.ToString() == request.MediaId)
+            .Select(media => new MediaDto
         {
             MediaId = media.Id.ToString(),
             Path = media.Path,
