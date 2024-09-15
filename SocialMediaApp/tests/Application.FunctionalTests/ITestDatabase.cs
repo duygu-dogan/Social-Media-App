@@ -1,13 +1,17 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SocialMediaApp.Application.FunctionalTests;
-public interface ITestDatabase
+namespace Application.FunctionalTests
 {
-    Task InitialiseAsync();
-
-    DbConnection GetConnection();
-
-    Task ResetAsync();
-
-    Task DisposeAsync();
+    public interface ITestDatabase
+    {
+        Task InitialiseAsync();
+        DbConnection GetConnection();
+        Task ResetAsync();
+        Task DisposeAsync();
+    }
 }
