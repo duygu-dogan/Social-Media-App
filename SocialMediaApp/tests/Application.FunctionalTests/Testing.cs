@@ -1,8 +1,10 @@
-﻿using MediatR;
+﻿using System.Linq.Expressions;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SocialMediaApp.Domain.Constants;
+using SocialMediaApp.Domain.Entities;
 using SocialMediaApp.Infrastructure.Data;
 using SocialMediaApp.Infrastructure.Identity;
 
@@ -11,7 +13,7 @@ namespace Application.FunctionalTests;
 public class Testing
 {
     private static ITestDatabase? _database;
-    private static CustomWebApplicationFactory _factory = null!;
+    private static CustomWebApplicationFactory? _factory = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
     private static string? _userId;
 
@@ -81,15 +83,29 @@ public class Testing
         throw new Exception($"Unable to create {username}.{Environment.NewLine}{errors}");
     }
 
+    public static async Task<string> RunAsDomainUserAsync(string userName, string password, string[] roles)
+    {
+        var applicationUserId = await RunAsUserAsync(userName, password, roles);
+
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+        var user = new User
+        {
+            ApplicationUserId = Guid.Parse(applicationUserId),
+            FullName = userName,
+            UserName = userName
+        };
+
+        context!.DomainUsers.Add(user);
+
+        await context.SaveChangesAsync();
+
+        return user!.Id.ToString();
+    }
     public static async Task ResetState()
     {
-        try
-        {
-            await _database!.ResetAsync();
-        }
-        catch (Exception)
-        {
-        }
+        await _database!.ResetAsync();
         _userId = null;
     }
 
@@ -99,6 +115,21 @@ public class Testing
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         return await context.FindAsync<TEntity>(keyValues);
     }
+
+    public static async Task<TEntity?> FirstOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, Object>> include = null!)
+            where TEntity : class
+    {
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        var query = context!.Set<TEntity>().AsQueryable();
+        if (include != null)
+            query = query.Include(include);
+
+        return await query.FirstOrDefaultAsync(predicate);
+    }
+
 
     public static async Task AddAsync<TEntity>(TEntity entity) where TEntity : class
     {
@@ -120,6 +151,6 @@ public class Testing
     public async Task RunAfterAnyTests()
     {
         await _database!.DisposeAsync();
-        await _factory.DisposeAsync();
+        await _factory!.DisposeAsync();
     }
 }
