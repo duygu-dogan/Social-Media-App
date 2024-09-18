@@ -17,9 +17,10 @@ public class DeleteConversationCommandHandler : IRequestHandler<DeleteConversati
 
     public async Task Handle(DeleteConversationCommand request, CancellationToken cancellationToken)
     {
-        var conversation = await _context.Conversations.FindAsync(request.id, cancellationToken);
+        var conversation = await _context.Conversations.FindAsync(Guid.Parse(request.id), cancellationToken);
 
         Guard.Against.NotFound(request.id, conversation);
         _context.Conversations.Remove(conversation);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

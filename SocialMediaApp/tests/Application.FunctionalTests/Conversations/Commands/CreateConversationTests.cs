@@ -8,7 +8,6 @@ using SocialMediaApp.Domain.Entities;
 using static Testing;
 public class CreateConversationTests: BaseTestFixture
 {
-
     [Test]
     public async Task ShoulThrowValidationEx_WhenNoMembers()
     {

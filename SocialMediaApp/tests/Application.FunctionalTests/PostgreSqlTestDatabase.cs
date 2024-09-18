@@ -38,7 +38,7 @@ public class PostgreSqlTestDatabase : ITestDatabase
 
         _connectionString = _configuration.GetConnectionString("PostgresConnection")!;
 
-        _logger.LogInformation("Updated Connection String: {ConnectionString}", _connectionString);
+        //_logger.LogInformation("Updated Connection String: {ConnectionString}", _connectionString);
 
         _connection = new NpgsqlConnection(_connectionString);
         await _connection.OpenAsync();
