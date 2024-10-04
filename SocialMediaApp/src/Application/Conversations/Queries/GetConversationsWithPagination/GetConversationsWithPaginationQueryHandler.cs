@@ -27,17 +27,14 @@ public class GetConversationsWithPaginationQueryHandler : IRequestHandler<GetCon
             .OrderByDescending(c => c.Created)
             .Select(c => new ConversationVM
             {
-                Members = c.Members!.Select(u => new UserDto
-                {
-                    Id = u.Id.ToString(),
-                    FullName = u.FullName,
-                    UserName = u.UserName
-                }).ToList(),
-                Messages = c.Messages!.Select(m => new MessageDto
-                {
-                    ToUserId = m.ToUserId.ToString(),
-                    Content = m.Content
-                }).ToList()
+                Members = _context.DomainUsers
+                    .Where(u => c.Members!.Any(m => m.Id == u.Id))
+                    .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                    .ToList(),
+                Messages = _context.Messages
+                    .Where(m => m.FromUserId.ToString() == request.UserId || m.ToUserId.ToString() == request.UserId)
+                    .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+                    .ToList()
             })
             .PaginatedListAsync(request.PageNumber, request.PageSize);
     }
