@@ -16,26 +16,19 @@ public class GetConversationsWithPaginationQueryHandler : IRequestHandler<GetCon
 
     public async Task<PaginatedList<ConversationVM>> Handle(GetConversationsWithPaginationQuery request, CancellationToken cancellationToken)
     {
-        //return await _context.Conversations.
-        //    Where(c => c.Members != null && c.Members.Any(u => u.Id.ToString() == request.UserId || u.ApplicationUserId.ToString() == request.UserId))
-        //    .OrderByDescending(c => c.Created)
-        //    .ProjectTo<ConversationVM>(_mapper.ConfigurationProvider)
-        //    .PaginatedListAsync(request.PageNumber, request.PageSize);
+        var conversations = await _context.Conversations
+        .Where(c => c.Members!.Any(u => u.Id.ToString() == request.UserId || u.ApplicationUserId.ToString() == request.UserId))
+        .Include(c => c.Members)
+        .Include(c => c.Messages)
+        .OrderByDescending(c => c.Created)
+        .ToListAsync();
 
-        return await _context.Conversations
-            .Where(c => c.Members != null && c.Members.Any(u => u.Id.ToString() == request.UserId || u.ApplicationUserId.ToString() == request.UserId))
-            .OrderByDescending(c => c.Created)
-            .Select(c => new ConversationVM
-            {
-                Members = _context.DomainUsers
-                    .Where(u => c.Members!.Any(m => m.Id == u.Id))
-                    .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                    .ToList(),
-                Messages = _context.Messages
-                    .Where(m => m.FromUserId.ToString() == request.UserId || m.ToUserId.ToString() == request.UserId)
-                    .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
-                    .ToList()
-            })
-            .PaginatedListAsync(request.PageNumber, request.PageSize);
+        var conversationVMs = conversations.Select(c => new ConversationVM
+        {
+            Members = c.Members!.Select(m => _mapper.Map<UserDto>(_context.DomainUsers.FirstOrDefault(u => u.Id == m.Id))).ToList(),
+            LastMessage = c.Messages!.Select(m => _mapper.Map<MessageDto>(_context.Messages.FirstOrDefault(ms => ms.ConversationId == c.Id))).LastOrDefault()
+        }).ToList();
+
+        return new PaginatedList<ConversationVM>(conversationVMs, conversationVMs.Count, request.PageNumber, request.PageSize);
     }
 }
