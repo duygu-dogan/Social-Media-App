@@ -19,11 +19,7 @@ public class MessageDto
     {
         public Mapping()
         {
-            CreateMap<Message, MessageDto>()
-                .ForMember(d => d.MediaId, opt => opt.MapFrom(s => s.MediaId.ToString()))
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id.ToString()))
-                .ForMember(d => d.FromUserId, opt => opt.MapFrom(s => s.FromUserId.ToString()))
-                .ForMember(d => d.ToUserId, opt => opt.MapFrom(s => s.ToUserId.ToString()));
+            CreateMap<Message, MessageDto>();
         }
     }
 }
