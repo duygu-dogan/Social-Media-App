@@ -23,7 +23,7 @@ public class CreateFollowCommandHandler : IRequestHandler<CreateFollowCommand, U
     public async Task<Unit> Handle(CreateFollowCommand request, CancellationToken cancellationToken)
     {
         if(request.FollowedId == null)
-            throw new BadRequestException("FollowerId is required");
+            throw new BadRequestException("FollowedId is required");
 
         var follewer = await _context.DomainUsers
             .FirstOrDefaultAsync(u => u.ApplicationUserId.ToString() == _user.Id, cancellationToken);
