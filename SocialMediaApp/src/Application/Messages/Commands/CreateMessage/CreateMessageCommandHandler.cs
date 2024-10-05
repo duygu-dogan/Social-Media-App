@@ -22,7 +22,8 @@ internal class CreateMessageCommandHandler : IRequestHandler<CreateMessageComman
     public async Task Handle(CreateMessageCommand request, CancellationToken cancellationToken)
     {
         var toUser = await _context.DomainUsers.FindAsync(Guid.Parse(request.ToUserId!));
-        var fromUser = await _context.DomainUsers.FindAsync(_user.Id);
+        var fromUser = await _context.DomainUsers.Where(u => u.ApplicationUserId.ToString() == _user.Id).FirstOrDefaultAsync();
+        var conversation = await _context.Conversations.FindAsync(Guid.Parse(request.ConversationId!));
 
         if (toUser == null)
         {
@@ -32,13 +33,19 @@ internal class CreateMessageCommandHandler : IRequestHandler<CreateMessageComman
         {
             throw new NotFoundException(nameof(User), _user.Id!);
         }
+        else if(conversation == null)
+        {
+            throw new NotFoundException(nameof(conversation), request.ConversationId!);
+        }
 
         var message = new Message
         {
             CreatedBy = fromUser,
             ToUserId = toUser.Id,
             Content = request.Content,
-            MediaId = Guid.Parse(request.MediaId!)
+            IsRead = request.IsRead,
+            ConversationId = request.ConversationId == null ? Guid.Empty : Guid.Parse(request.ConversationId),
+            Media = request.MediaId == null ? null : new Media { Id = Guid.Parse(request.MediaId!) }
         };
 
         message.AddDomainEvent(new MessageCreatedEvent(message));
