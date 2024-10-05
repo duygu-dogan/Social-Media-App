@@ -9,5 +9,5 @@ namespace SocialMediaApp.Application.Conversations.Queries.GetConversationsWithP
 public class ConversationVM
 {    
     public IReadOnlyCollection<UserDto> Members { get; set; } = Array.Empty<UserDto>();
-    public IReadOnlyCollection<MessageDto> Messages { get; set; } = Array.Empty<MessageDto>();
+    public MessageDto? LastMessage { get; set; } = null;
 }
