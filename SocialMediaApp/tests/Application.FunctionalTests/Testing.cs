@@ -105,6 +105,10 @@ public class Testing
     }
     public static async Task ResetState()
     {
+        if (_database == null)
+        {
+            throw new InvalidOperationException("Database is not initialized.");
+        }
         await _database!.ResetAsync();
         _userId = null;
     }
