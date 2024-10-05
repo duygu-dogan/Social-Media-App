@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 SocialMediaApp/src/Web/appsettings.json
+SocialMediaApp/tests/Application.FunctionalTests/appsettings.test.json
