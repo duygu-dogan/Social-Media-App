@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SocialMediaApp.Infrastructure.Data;
@@ -11,9 +12,11 @@ using SocialMediaApp.Infrastructure.Data;
 namespace SocialMediaApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241004213336_MessagesMigration")]
+    partial class MessagesMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,7 +289,7 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ConversationId")
+                    b.Property<Guid?>("ConversationId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Created")
@@ -295,8 +298,8 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("boolean");
+                    b.Property<Guid>("FromUserId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
@@ -304,7 +307,7 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedById")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("MediaId")
+                    b.Property<Guid>("MediaId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ToUserId")
@@ -316,8 +319,9 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("MediaId")
-                        .IsUnique();
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("MediaId");
 
                     b.HasIndex("ToUserId");
 
@@ -348,7 +352,7 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedById")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("PostId")
+                    b.Property<Guid>("PostId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Type")
@@ -668,19 +672,25 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("SocialMediaApp.Domain.Entities.Message", b =>
                 {
-                    b.HasOne("SocialMediaApp.Domain.Entities.Conversation", "Conversation")
+                    b.HasOne("SocialMediaApp.Domain.Entities.Conversation", null)
                         .WithMany("Messages")
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ConversationId");
 
                     b.HasOne("SocialMediaApp.Domain.Entities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
+                    b.HasOne("SocialMediaApp.Domain.Entities.User", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SocialMediaApp.Domain.Entities.Media", "Media")
-                        .WithOne()
-                        .HasForeignKey("SocialMediaApp.Domain.Entities.Message", "MediaId");
+                        .WithMany()
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SocialMediaApp.Domain.Entities.User", "ToUser")
                         .WithMany()
@@ -688,9 +698,9 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Conversation");
-
                     b.Navigation("CreatedBy");
+
+                    b.Navigation("FromUser");
 
                     b.Navigation("Media");
 
@@ -711,7 +721,9 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
 
                     b.HasOne("SocialMediaApp.Domain.Entities.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CreatedBy");
 
