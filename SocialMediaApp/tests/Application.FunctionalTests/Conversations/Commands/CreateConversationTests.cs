@@ -1,7 +1,6 @@
 ﻿namespace Application.FunctionalTests.Conversations.Commands;
 
 using FluentAssertions;
-using Microsoft.AspNetCore.Http.HttpResults;
 using SocialMediaApp.Application.Common.Exceptions;
 using SocialMediaApp.Application.Conversations.Commands.CreateConversation;
 using SocialMediaApp.Domain.Entities;
@@ -9,7 +8,7 @@ using static Testing;
 public class CreateConversationTests: BaseTestFixture
 {
     [Test]
-    public async Task ShoulThrowValidationEx_WhenNoMembers()
+    public async Task ShouldThrowValidationEx_WhenNoMembers()
     {
         var command = new CreateConversationCommand();
         await FluentActions.Invoking(() => SendAsync(command))
