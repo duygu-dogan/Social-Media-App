@@ -24,7 +24,7 @@ public class SecureRandomGenerator
         int randomValue = BitConverter.ToInt32(randomBytes, 0);
         randomValue = Math.Abs(randomValue % range);
 
-        return randomValue + minValue;
+        return randomValue;
 
     }
 }
