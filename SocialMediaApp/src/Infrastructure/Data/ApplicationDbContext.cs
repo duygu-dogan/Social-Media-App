@@ -20,7 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplica
     public DbSet<Like> Likes => Set<Like>();
     public DbSet<Post> Posts => Set<Post>();
     public DbSet<Media> Medias => Set<Media>();
-    public DbSet<Notification> Notifications => Set<Notification>();
+    public virtual DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<RePost> RePosts => Set<RePost>();
     public DbSet<User> DomainUsers => Set<User>();
 
