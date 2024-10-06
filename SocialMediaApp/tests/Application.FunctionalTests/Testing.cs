@@ -150,6 +150,10 @@ public class Testing
 
         return await context.Set<TEntity>().CountAsync();
     }
+    public static IServiceScope GetScope()
+    {
+        return _scopeFactory.CreateScope();
+    }
 
     [OneTimeTearDown]
     public async Task RunAfterAnyTests()
