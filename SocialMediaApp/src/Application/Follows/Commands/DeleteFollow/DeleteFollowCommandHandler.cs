@@ -17,11 +17,11 @@ public class DeleteFollowCommandHandler : IRequestHandler<DeleteFollowCommand>
 
     public async Task Handle(DeleteFollowCommand request, CancellationToken cancellationToken)
     {
-        var follow = await _context.Follows.FindAsync(request.id, cancellationToken);
+        var follow = await _context.Follows.FindAsync(new object[] { Guid.Parse(request.FollowerId!), Guid.Parse(request.FollowedId!) }, cancellationToken);
 
-        Guard.Against.NotFound(request.id, follow);
+        Guard.Against.NotFound(request.FollowedId!, follow);
 
-       _context.Follows.Remove(follow);
+       _context.Follows.Remove(follow!);
         await _context.SaveChangesAsync(cancellationToken);
     }
 }

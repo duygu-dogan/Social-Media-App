@@ -27,6 +27,7 @@ public class FollowCreatedEventHandler : INotificationHandler<FollowCreatedEvent
         var notif = new Notification
         {
             ForUserId = follow!.FollowedId,
+            CreatedById = follow!.FollowerId,
             Type = NotificationType.Follow,
         };
 

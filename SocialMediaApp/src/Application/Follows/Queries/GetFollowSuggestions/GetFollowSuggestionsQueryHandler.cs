@@ -20,7 +20,7 @@ public class GetFollowSuggestionsQueryHandler : IRequestHandler<GetFollowSuggest
     public async Task<IEnumerable<SuggestionUserDto>> Handle(GetFollowSuggestionsQuery request, CancellationToken cancellationToken)
     {
         var user = await _context.DomainUsers
-            .FirstOrDefaultAsync(u => u.ApplicationUserId.ToString() == _user.Id, cancellationToken);
+            .Where(u => u.ApplicationUserId.ToString() == _user.Id).Include(u => u.Followeds).FirstOrDefaultAsync();
 
         if (user == null)
             throw new ForbiddenAccessException();
