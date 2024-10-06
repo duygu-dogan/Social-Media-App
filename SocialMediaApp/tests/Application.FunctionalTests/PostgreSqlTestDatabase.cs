@@ -70,5 +70,8 @@ public class PostgreSqlTestDatabase : ITestDatabase
         _connection.Close();
        await _container.DisposeAsync();
     }
-
+    public string GetConnectionString()
+    {
+        return _connectionString;
+    }
 }
