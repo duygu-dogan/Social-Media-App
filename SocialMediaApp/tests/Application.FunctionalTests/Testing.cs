@@ -143,6 +143,14 @@ public class Testing
         await context.SaveChangesAsync();
     }
 
+    public static async Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        context.AddRange(entities);
+        await context.SaveChangesAsync();
+    }
+
     public static async Task<int> CountAsync<TEntity>() where TEntity : class
     {
         using var scope = _scopeFactory.CreateScope();
