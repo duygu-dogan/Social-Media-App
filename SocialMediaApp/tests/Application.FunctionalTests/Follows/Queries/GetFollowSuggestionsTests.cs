@@ -1,7 +1,9 @@
 ﻿namespace Application.FunctionalTests.Follows.Queries;
 
+using System.Reflection.Metadata;
 using Application.FunctionalTests;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Application.Common.Exceptions;
 using SocialMediaApp.Application.Follows.Commands.CreateFollow;
 using SocialMediaApp.Application.Follows.Queries.GetFollowSuggestions;
@@ -106,5 +108,46 @@ public class GetFollowSuggestionsTests: BaseTestFixture
 
         result.Should().NotBeNull();
         result.Should().HaveCount(2);
+    }
+    [Test]
+    public async Task ShouldReturnEmptyList_IfAllUsersAreFollowed()
+    {
+        var user1 = await RunAsDomainUserAsync("TestUser1", "Test1234!", Array.Empty<string>());
+        var user2 = await RunAsDomainUserAsync("TestUser2", "Test1234!", Array.Empty<string>());
+        var user3 = await RunAsDomainUserAsync("TestUser3", "Test1234!", Array.Empty<string>());
+        var user4 = await RunAsDomainUserAsync("TestUser4", "Test1234!", Array.Empty<string>());
+
+        await AddAsync(new Follow { FollowerId = Guid.Parse(user4), FollowedId = Guid.Parse(user1) });
+        await AddAsync(new Follow { FollowerId = Guid.Parse(user4), FollowedId = Guid.Parse(user2) });
+        await AddAsync(new Follow { FollowerId = Guid.Parse(user4), FollowedId = Guid.Parse(user3) });
+
+        var result = await SendAsync(new GetFollowSuggestionsQuery());
+
+        result.Should().NotBeNull();
+        result.Should().HaveCount(0);
+    }
+    [Test]
+    public async Task ShouldSkipRandomly_And_TakeCorrectNumberOfSuggestions()
+    {
+        // Arrange
+        var user1 = await RunAsDomainUserAsync("TestUser1", "Test1234!", Array.Empty<string>());
+
+        var otherUsers = Enumerable.Range(1, 20).Select(i => new User
+        {
+            Id = Guid.NewGuid(),
+            ApplicationUserId = Guid.NewGuid(),
+            FullName = $"Other User {i}"
+        }).ToList();
+
+        await AddRangeAsync(otherUsers);
+
+        var request = new GetFollowSuggestionsQuery { Count = 5 };
+
+        // Act
+        var result = await SendAsync(request);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(5); 
     }
 }
