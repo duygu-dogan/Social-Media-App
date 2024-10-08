@@ -43,4 +43,9 @@
     <ProjectReference Include="..\..\src\Web\Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Likes\EventHandlers\" />
+    <Folder Include="Likes\Queries\" />
+  </ItemGroup>
+
 </Project>
