@@ -28,7 +28,7 @@ public class CreateLikeCommandHandler : IRequestHandler<CreateLikeCommand, Unit>
             throw new NotFoundException(nameof(Post), request.PostId!);
 
         var liker = await _context.DomainUsers
-            .FirstOrDefaultAsync(u => u.ApplicationUserId.ToString() == _user.Id, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Id.ToString() == _user.Id, cancellationToken);
         if (liker == null)
             throw new ForbiddenAccessException();
 

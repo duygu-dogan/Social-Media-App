@@ -15,7 +15,7 @@ public class GetFollowsWithPaginationQueryHandler : IRequestHandler<GetFollowsWi
     public async Task<PaginatedList<FollowDto>> Handle(GetFollowsWithPaginationQuery request, CancellationToken cancellationToken)
     {
         return await _context.Follows
-            .Where(f => f.Id.ToString() == request.FollowId)
+            .Where(f => f.FollowerId.ToString() == request.FollowerId)
             .Select(f => new FollowDto
             {
                 Id = f.Id.ToString(),
