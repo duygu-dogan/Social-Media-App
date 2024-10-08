@@ -9,7 +9,7 @@ public class GetFollowsWithPaginationQueryValidator: AbstractValidator<GetFollow
 {
     public GetFollowsWithPaginationQueryValidator()
     {
-        RuleFor(x => x.FollowId)
+        RuleFor(x => x.FollowerId)
             .NotEmpty();
         RuleFor(x => x.PageNumber)
             .GreaterThanOrEqualTo(1).WithMessage("PageNumber at least greater than or equal to 1.");
