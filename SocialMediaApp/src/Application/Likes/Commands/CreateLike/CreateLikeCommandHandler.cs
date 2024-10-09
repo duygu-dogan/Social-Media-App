@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Application.Common.Exceptions;
 using SocialMediaApp.Application.Common.Interfaces;
 using SocialMediaApp.Domain.Entities;
@@ -28,17 +31,18 @@ public class CreateLikeCommandHandler : IRequestHandler<CreateLikeCommand, Unit>
             throw new NotFoundException(nameof(Post), request.PostId!);
 
         var liker = await _context.DomainUsers
-            .FirstOrDefaultAsync(u => u.Id.ToString() == _user.Id, cancellationToken);
+            .FirstOrDefaultAsync(u => u.ApplicationUserId.ToString() == _user.Id, cancellationToken);
         if (liker == null)
             throw new ForbiddenAccessException();
 
-        var alreadyLiked = await _context.Likes.AnyAsync(l => l.PostId == post.Id && l.CreatedBy!.Id == liker.Id, cancellationToken);
+        var alreadyLiked = await _context.Likes.AnyAsync(l => l.PostId == post.Id && l.LikerId == liker.Id, cancellationToken);
+
         if (!alreadyLiked)
         {
             var entity = new Like
             {
                 PostId = post.Id,
-                CreatedBy = liker
+                LikerId = liker.Id
             };
 
             entity.AddDomainEvent(new LikeCreatedEvent(entity));
