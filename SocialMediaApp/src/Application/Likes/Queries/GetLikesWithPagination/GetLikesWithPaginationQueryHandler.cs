@@ -24,7 +24,7 @@ internal class GetLikesWithPaginationQueryHandler : IRequestHandler<GetLikesWith
             .Select(Likes => new LikeDto
             {
                 Id = Likes.Id.ToString(),
-                LikerId = Likes.CreatedBy!.Id.ToString(),
+                LikerId = Likes.Liker!.Id.ToString(),
                 Created = Likes.Created
             })
             .OrderByDescending(f => f.Created)

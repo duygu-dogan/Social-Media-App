@@ -11,4 +11,5 @@ public class Follow: BaseAuditableEntity
     public Guid FollowerId { get; set; }
     public User? Followed { get; set; }
     public Guid FollowedId { get; set; }
+    public bool IsFollowed { get; set; } = true;
 }
