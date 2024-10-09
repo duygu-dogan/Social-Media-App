@@ -5,4 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialMediaApp.Application.Likes.Commands.DeleteLike;
-public record DeleteLikeCommand(string? id): IRequest;
+public record DeleteLikeCommand(): IRequest
+{
+    public string? PostId { get; set; }
+    public string? LikerId { get; set; }
+}
