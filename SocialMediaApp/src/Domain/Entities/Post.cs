@@ -22,8 +22,8 @@ public class Post: AuthorAuditableEntity
     public static Expression<Func<Post, bool>> LikedBySomeoneFollowedBy(Guid userId)
     {
         return p => (p.Likes ?? Enumerable.Empty<Like>())
-                    .Any(l => l.CreatedBy != null &&
-                              (l.CreatedBy!.Followers ?? Enumerable.Empty<Follow>())
+                    .Any(l => l.Liker != null &&
+                              (l.Liker!.Followers ?? Enumerable.Empty<Follow>())
                     .Any(f => f.FollowerId == userId));
     }
 
@@ -42,10 +42,10 @@ public class Post: AuthorAuditableEntity
     public static Expression<Func<Post, User?>> GetUserWhoLikedFollowedBy(Guid userId)
     {
         return p => (p.Likes ?? Enumerable.Empty<Like>())
-                    .Where(l => l.CreatedBy != null &&
-                            (l.CreatedBy.Followers ?? Enumerable.Empty<Follow>())
+                    .Where(l => l.Liker != null &&
+                            (l.Liker.Followers ?? Enumerable.Empty<Follow>())
                                 .Any(f => f.FollowerId == userId))
-                    .Select(l => l.CreatedBy)
+                    .Select(l => l.Liker)
                     .FirstOrDefault();
      }
 
@@ -59,7 +59,7 @@ public class Post: AuthorAuditableEntity
 
     public static Expression<Func<Post, bool>> IsLikedBy(Guid userId)
     {
-        return p => (p.Likes ?? Enumerable.Empty<Like>()).Any(l => l.CreatedBy!.Id == userId);
+        return p => (p.Likes ?? Enumerable.Empty<Like>()).Any(l => l.Liker!.Id == userId);
     }
 
     public static Expression<Func<Post, bool>> IsRePostedBy(Guid userId)

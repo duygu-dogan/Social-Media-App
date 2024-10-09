@@ -66,6 +66,9 @@ public class CreateFollowTests: BaseTestFixture
         };
 
         var result = await SendAsync(command);
+        var follow = await FirstOrDefaultAsync<Follow>(Follow => Follow.FollowedId == Guid.Parse(followedId) && Follow.FollowerId == Guid.Parse(followerId));
+
+        follow.Should().NotBeNull();
         result.Should().Be(Unit.Value);
         result.Should().NotBeNull();
     }
@@ -87,7 +90,7 @@ public class CreateFollowTests: BaseTestFixture
         };
         var result = await SendAsync(command);
 
-        var follow = await FirstOrDefaultAsync<Follow>(f => f.FollowedId == Guid.Parse(followedId) && f.FollowerId == Guid.Parse(followerId));
+        var follow = await FindAsync<Follow>(new object[] { Guid.Parse(followerId), Guid.Parse(followedId) });
         follow.Should().NotBeNull();
         result.Should().Be(Unit.Value);
     }
