@@ -9,7 +9,7 @@ using SocialMediaApp.Domain.Entities;
 using SocialMediaApp.Domain.Events;
 
 namespace SocialMediaApp.Application.Likes.EventsHandlers;
-internal class LikeCreatedEventHandler : INotificationHandler<LikeCreatedEvent>
+public class LikeCreatedEventHandler : INotificationHandler<LikeCreatedEvent>
 {
     private readonly IApplicationDbContext _context;
     private readonly ILogger<LikeCreatedEventHandler> _logger;
@@ -22,7 +22,9 @@ internal class LikeCreatedEventHandler : INotificationHandler<LikeCreatedEvent>
 
     public async Task Handle(LikeCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var like = notification.Like;
+        var like = await _context.Likes.Where(l => l.Id == notification.Like!.Id).Include(l => l.Post)
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
         
         var alreadyNotified = await _context.Notifications.AnyAsync(
             n => n.ForUserId == like!.Post!.CreatedById && n.CreatedById == like.LikerId && n.Type == Domain.Entities.NotificationType.Like, cancellationToken);
@@ -32,6 +34,7 @@ internal class LikeCreatedEventHandler : INotificationHandler<LikeCreatedEvent>
 
         var notif = new Notification
         {   
+            CreatedById = like!.LikerId,
             ForUserId = like!.Post!.CreatedById,
             Type = NotificationType.Like
         };
