@@ -8,7 +8,7 @@ using SocialMediaApp.Application.Common.Mappings;
 using SocialMediaApp.Application.Common.Models;
 
 namespace SocialMediaApp.Application.Likes.Queries.GetLikesWithPagination;
-internal class GetLikesWithPaginationQueryHandler : IRequestHandler<GetLikesWithPaginationQuery, PaginatedList<LikeDto>>
+public class GetLikesWithPaginationQueryHandler : IRequestHandler<GetLikesWithPaginationQuery, PaginatedList<LikeDto>>
 {
     private readonly IApplicationDbContext _context;
 
@@ -20,7 +20,7 @@ internal class GetLikesWithPaginationQueryHandler : IRequestHandler<GetLikesWith
     public async Task<PaginatedList<LikeDto>> Handle(GetLikesWithPaginationQuery request, CancellationToken cancellationToken)
     {
         return await _context.Likes
-            .Where(f => f.Id.ToString() == request.LikeId)
+            .Where(l => l.LikerId.ToString() == request.LikerId)
             .Select(Likes => new LikeDto
             {
                 Id = Likes.Id.ToString(),

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using SocialMediaApp.Application.Common.Models;
 
 namespace SocialMediaApp.Application.Likes.Queries.GetLikesWithPagination;
-internal record GetLikesWithPaginationQuery: IRequest<PaginatedList<LikeDto>>
+public record GetLikesWithPaginationQuery: IRequest<PaginatedList<LikeDto>>
 {
-    public string? LikeId { get; set; }
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
+    public string? LikerId { get; set; }
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
 }

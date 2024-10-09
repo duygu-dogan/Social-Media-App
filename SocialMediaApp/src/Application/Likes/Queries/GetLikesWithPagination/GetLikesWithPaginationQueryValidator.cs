@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialMediaApp.Application.Likes.Queries.GetLikesWithPagination;
-internal class GetLikesWithPaginationQueryValidator: AbstractValidator<GetLikesWithPaginationQuery>
+public class GetLikesWithPaginationQueryValidator: AbstractValidator<GetLikesWithPaginationQuery>
 {
     public GetLikesWithPaginationQueryValidator()
     {
-        RuleFor(x => x.LikeId)
+        RuleFor(x => x.LikerId)
             .NotEmpty();
         RuleFor(x => x.PageNumber)
             .GreaterThanOrEqualTo(1).WithMessage("PageNumber at least greater than or equal to 1.");

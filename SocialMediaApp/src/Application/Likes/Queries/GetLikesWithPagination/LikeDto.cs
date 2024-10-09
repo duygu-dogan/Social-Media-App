@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SocialMediaApp.Application.Likes.Queries.GetLikesWithPagination;
-internal class LikeDto
+public class LikeDto
 {
     public string? Id { get; set; }
     public string? LikerId { get; set; }
