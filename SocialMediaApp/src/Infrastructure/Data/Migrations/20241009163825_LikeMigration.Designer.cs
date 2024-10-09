@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SocialMediaApp.Infrastructure.Data;
@@ -11,9 +12,11 @@ using SocialMediaApp.Infrastructure.Data;
 namespace SocialMediaApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241009163825_LikeMigration")]
+    partial class LikeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,9 +207,6 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsFollowed")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
@@ -219,7 +219,7 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("SocialMediaApp.Domain.Entities.Like", b =>
                 {
-                    b.Property<Guid>("LikerId")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("PostId")
@@ -231,13 +231,13 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("LikerId", "PostId");
+                    b.Property<string>("LastModifiedById")
+                        .HasColumnType("text");
+
+                    b.HasKey("CreatedById", "PostId");
 
                     b.HasIndex("PostId");
 
@@ -339,7 +339,7 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ForUserId")
+                    b.Property<Guid>("ForUserId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsRead")
@@ -643,9 +643,9 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("SocialMediaApp.Domain.Entities.Like", b =>
                 {
-                    b.HasOne("SocialMediaApp.Domain.Entities.User", "Liker")
+                    b.HasOne("SocialMediaApp.Domain.Entities.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("LikerId")
+                        .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -655,7 +655,7 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Liker");
+                    b.Navigation("CreatedBy");
 
                     b.Navigation("Post");
                 });
@@ -717,7 +717,9 @@ namespace SocialMediaApp.Infrastructure.Data.Migrations
 
                     b.HasOne("SocialMediaApp.Domain.Entities.User", "ForUser")
                         .WithMany()
-                        .HasForeignKey("ForUserId");
+                        .HasForeignKey("ForUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SocialMediaApp.Domain.Entities.Post", "Post")
                         .WithMany()
