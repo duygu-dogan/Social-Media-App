@@ -18,9 +18,13 @@ public class DeleteLikeCommandHandler : IRequestHandler<DeleteLikeCommand>
 
     public async Task Handle(DeleteLikeCommand request, CancellationToken cancellationToken)
     {
-        var like = await _context.Likes.FindAsync(request.id, cancellationToken);
 
-        Guard.Against.NotFound(request.id!, like);
+        var like = await _context.Likes.FindAsync(new object[] { Guid.Parse(request.PostId!), Guid.Parse(request.LikerId!) }, cancellationToken);
+
+        if(like == null)
+        {
+            throw new NotFoundException(nameof(Like), request.LikerId!);
+        }
 
         _context.Likes.Remove(like);
         await _context.SaveChangesAsync(cancellationToken);
